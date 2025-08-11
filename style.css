@@ -1,185 +1,60 @@
-/* --- 全局樣式 --- */
-/* --- 全新分頁結構樣式 --- *//* --- 全新分頁結構樣式 --- */
-body {
-    padding-top: 60px; /* 為固定的導覽列預留空間 */
-}
-
-.tab-nav {
-    display: flex;
-    background-color: #1a2366;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    position: fixed; /* 固定在頁面頂部 */
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-}
-
-.tab-link {
-    flex-grow: 1;
-    padding: 15px 10px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    color: #ccc;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    border-bottom: 3px solid transparent; /* 未選中時的底線 */
-    transition: all 0.3s ease;
-}
-
-.tab-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
-}
-
-.tab-link.active {
-    color: #ffcc00; /* 選中時的顏色 */
-    border-bottom-color: #ffcc00; /* 選中時的底線 */
-}
-
-.tab-content {
-    display: none; /* 預設隱藏所有分頁內容 */
-    animation: fadeIn 0.5s;
-}
-
-.tab-content.active {
-    display: block; /* 只顯示當前選中的分頁 */
-}
-
-/* 讓 container 保持置中 */
-.content-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 15px;
-}
-
-/* 表單群組樣式 */
-.form-group {
-    margin-top: 20px;
-}
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #87CEEB;
-    font-weight: bold;
-}
-.form-group select, .form-group input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 2px solid #3a8fb7;
-    background-color: #0c1445;
-    color: #fff;
-    font-size: 16px;
-}
-
-/* 原有 .container 樣式調整 */
-/* 我們不再需要 .container 的 margin-top，因為 body padding-top 已經處理了 */
-.container {
-    margin: 0;
-    padding: 0;
-}
-
-/* 其他您原有的 CSS 樣式保持不變 */
-
-
-body {
-    padding-top: 60px; /* 為固定的導覽列預留空間 */
-}
-
-.tab-nav {
-    display: flex;
-    background-color: #1a2366;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    position: fixed; /* 固定在頁面頂部 */
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-}
-
-.tab-link {
-    flex-grow: 1;
-    padding: 15px 10px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    color: #ccc;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    border-bottom: 3px solid transparent; /* 未選中時的底線 */
-    transition: all 0.3s ease;
-}
-
-.tab-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
-}
-
-.tab-link.active {
-    color: #ffcc00; /* 選中時的顏色 */
-    border-bottom-color: #ffcc00; /* 選中時的底線 */
-}
-
-.tab-content {
-    display: none; /* 預設隱藏所有分頁內容 */
-    animation: fadeIn 0.5s;
-}
-
-.tab-content.active {
-    display: block; /* 只顯示當前選中的分頁 */
-}
-
-/* 讓 container 保持置中 */
-.content-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 15px;
-}
-
-/* 表單群組樣式 */
-.form-group {
-    margin-top: 20px;
-}
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #87CEEB;
-    font-weight: bold;
-}
-.form-group select, .form-group input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 2px solid #3a8fb7;
-    background-color: #0c1445;
-    color: #fff;
-    font-size: 16px;
-}
-
-/* 原有 .container 樣式調整 */
-/* 我們不再需要 .container 的 margin-top，因為 body padding-top 已經處理了 */
-.container {
-    margin: 0;
-    padding: 0;
-}
-
-/* 其他您原有的 CSS 樣式保持不變 */
+/* --- 全新分頁結構樣式 --- */
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background-color: #000;
     color: #ffffff;
     margin: 0;
-    padding: 0;
-    line-height: 1.6;
+    padding: 60px 0 0 0; /* 為固定的導覽列預留空間 */
 }
-.container {
+.tab-nav {
+    display: flex;
+    background-color: #1a2366;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+.tab-link {
+    flex-grow: 1;
+    padding: 15px 10px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+.tab-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+.tab-link.active {
+    color: #ffcc00;
+    border-bottom-color: #ffcc00;
+}
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s;
+}
+.tab-content.active {
+    display: block;
+}
+.content-container {
     max-width: 900px;
-    margin: 20px auto;
+    margin: 0 auto;
     padding: 0 15px;
+}
+.section {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 h1, h2 {
     color: #ffcc00;
@@ -187,48 +62,23 @@ h1, h2 {
     padding-bottom: 10px;
     border-bottom: 2px solid rgba(255, 204, 0, 0.5);
     font-weight: 600;
+    margin-top: 0;
 }
 .intro-text {
     text-align: center;
     color: #ccc;
+    margin-top: 0;
 }
 
-/* --- 區塊樣式 --- */
-.section {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    padding: 25px;
-    margin: 30px 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-}
+/* --- 表單群組 --- */
+.form-group { margin-top: 20px; }
+.form-group label { display: block; margin-bottom: 8px; color: #87CEEB; font-weight: bold; }
+.form-group select, .form-group input { width: 100%; box-sizing: border-box; padding: 12px; border-radius: 8px; border: 2px solid #3a8fb7; background-color: #0c1445; color: #fff; font-size: 16px; }
 
 /* --- 尋星功能 --- */
-#search-container {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-#search-input {
-    flex-grow: 1;
-    max-width: 400px;
-    padding: 10px 15px;
-    border-radius: 20px;
-    border: 2px solid #3a8fb7;
-    background-color: #0c1445;
-    color: #fff;
-    font-size: 16px;
-}
-#search-container button {
-    padding: 10px 20px;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: all 0.2s ease-in-out;
-}
+#search-container { display: flex; gap: 10px; margin-bottom: 15px; justify-content: center; flex-wrap: wrap; }
+#search-input { flex-grow: 1; max-width: 400px; }
+#search-container button { padding: 10px 20px; border-radius: 20px; }
 #search-button { background-color: #2ecc71; color: white; }
 #search-button:hover { background-color: #27ae60; }
 #clear-button { background-color: #e74c3c; color: white; }
@@ -236,37 +86,31 @@ h1, h2 {
 .hidden { display: none !important; }
 
 /* --- 星圖 --- */
-#starmap-container {
-    position: relative;
-    width: 100%;
-    height: 500px;
-    background-color: #000;
-    border-radius: 15px;
-    overflow: hidden;
-}
+#starmap-container { position: relative; width: 100%; height: 500px; background-color: #000; border-radius: 15px; overflow: hidden; }
 #celestial-map { width: 100%; height: 100%; }
-#starmap-controls { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 10px; }
-#message { width: 100%; text-align: center; position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 10; padding: 5px 0; font-weight: bold; text-shadow: 0 0 5px black; color: #ffaf42; }
+#starmap-controls { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+#message { width: 100%; text-align: center; position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 10; padding: 5px 0; font-weight: bold; text-shadow: 0 0 5px black; color: #ffaf42; pointer-events: none; }
 
 /* --- 手機 UX 優化 --- */
 .zoom-controls { position: absolute; bottom: 20px; right: 20px; z-index: 20; display: flex; flex-direction: column; gap: 10px; }
 .zoom-button { width: 50px; height: 50px; background-color: rgba(255, 204, 0, 0.9); color: #000; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 36px; font-weight: bold; cursor: pointer; border: 2px solid rgba(255, 255, 255, 0.7); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); user-select: none; transition: background-color 0.2s, transform 0.2s; }
-.zoom-button:active { background-color: #fff; transform: scale(0.95); }
-#locationButton, #skyview-toggle { border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-size: 16px; font-weight: 600; transition: background-color 0.3s; }
+.zoom-button:active { transform: scale(0.95); }
+.control-button { border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s; }
+.control-button:active { transform: scale(0.95); }
 #locationButton { background-color: #ffcc00; color: #000; }
 #skyview-toggle { background-color: #3498db; color: white; }
 #skyview-toggle.active { background-color: #e74c3c; }
+#toggle-art-button { background-color: #9b59b6; color: white; }
+#toggle-art-button.active { background-color: #e91e63; }
 
-/* --- 目標指示器動畫 --- */
+/* --- 動畫 & 其他 --- */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes blink { 50% { opacity: 0.3; } }
 .target-indicator { animation: blink 1.5s linear infinite; fill: none; stroke: #FFD700; stroke-width: 2px; }
 
-/* --- 星座故事書 --- */
-.storybook-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
-.constellation-card { background-color: #1a2366; border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
-.constellation-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(46, 130, 255, 0.4); }
-.constellation-card img { width: 80px; height: 80px; }
-.constellation-card h3 { color: #89cff0; margin: 10px 0 0 0; font-size: 18px; }
+/* --- 星座故事書 (由於 HTML 變動，此處不再需要) --- */
+/* .storybook-grid { ... } */
+/* .constellation-card { ... } */
 
 /* --- 戶外羅盤 --- */
 .compass-steps ol { padding-left: 25px; }
@@ -276,30 +120,4 @@ h1, h2 {
 .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); justify-content: center; align-items: center; animation: fadeIn 0.3s; }
 .modal-content { background-color: #1a2366; padding: 30px; border-radius: 15px; width: 80%; max-width: 500px; text-align: center; position: relative; box-shadow: 0 5px 25px rgba(46, 130, 255, 0.5); animation: slideIn 0.4s; }
 .modal-close { position: absolute; top: 10px; right: 20px; color: #fff; font-size: 30px; cursor: pointer; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-/* --- 為新按鈕添加樣式 --- */
-#toggle-art-button {
-    background-color: #9b59b6; /* 紫色代表藝術感 */
-    color: white;
-}
-
-#toggle-art-button.active {
-    background-color: #e91e63; /* 啟用時變為粉紅色 */
-}
-
-/* 讓所有控制按鈕風格統一 */
-.control-button, #locationButton, #skyview-toggle {
-    border: none;
-    padding: 10px 15px; /* 稍微調整 padding */
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px; /* 統一字體大小以容納更多按鈕 */
-    font-weight: 600;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.control-button:active, #locationButton:active, #skyview-toggle:active {
-    transform: scale(0.95);
-}
