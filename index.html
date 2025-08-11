@@ -2,8 +2,8 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kidrise 觀星小助手 (本地版)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Kidrise 觀星小助手 (最終版)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,19 +13,35 @@
 
         <div class="section">
             <h2>即時星空圖</h2>
-            <p style="text-align: center;">下方的星圖載入了本地的天文數據。您可以用滑鼠拖曳探索、滾輪縮放。</p>
+            
+            <div id="search-container">
+                <input type="text" id="search-input" list="celestial-objects" placeholder="輸入星星、行星或星座名稱...">
+                <datalist id="celestial-objects"></datalist>
+                <button id="search-button">尋找</button>
+                <button id="clear-button" class="hidden">清除</button>
+            </div>
+
+            <p class="intro-text">點擊「開啟陀螺儀」，將手機對向天空，星圖將隨之移動！</p>
+            
             <div id="starmap-container">
                 <div id="celestial-map"></div>
-                <div id="starmap-controls">
-                    <button id="locationButton">📍 顯示我的位置</button>
-                    <p id="message"></p>
+
+                <div class="zoom-controls">
+                    <div id="zoom-in" class="zoom-button">+</div>
+                    <div id="zoom-out" class="zoom-button">-</div>
                 </div>
+
+                <div id="starmap-controls">
+                    <button id="locationButton">📍 更新位置</button>
+                    <button id="skyview-toggle">🔭 開啟陀螺儀</button>
+                </div>
+                <p id="message"></p>
             </div>
         </div>
         
         <div class="section">
             <h2>星座故事書</h2>
-            <p style="text-align: center;">點擊下方的星座卡片，聽聽它們在天上的故事吧！</p>
+            <p class="intro-text">點擊下方的星座卡片，聽聽它們在天上的故事吧！</p>
             <div class="storybook-grid">
                 <div class="constellation-card" onclick="showStoryModal('獵戶座', 'images/orion.svg', '獵戶座是夜空中最容易辨認的星座之一！他是一位勇猛的獵人，腰上繫著由三顆亮星組成的腰帶。在冬天，你可以很容易地找到他。')">
                     <img src="images/orion.svg" alt="獵戶座">
@@ -62,8 +78,8 @@
         </div>
     </div>
 
-    <script src="lib/d3.min.js"></script>
-    <script src="lib/celestial.min.js"></script>
+    <script src="lib/d3.v4.min.js"></script>
+    <script src="lib/d3-celestial.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
