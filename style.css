@@ -1,5 +1,90 @@
 /* --- 全局樣式 --- */
-/* --- 全新分頁結構樣式 --- */
+/* --- 全新分頁結構樣式 --- *//* --- 全新分頁結構樣式 --- */
+body {
+    padding-top: 60px; /* 為固定的導覽列預留空間 */
+}
+
+.tab-nav {
+    display: flex;
+    background-color: #1a2366;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    position: fixed; /* 固定在頁面頂部 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.tab-link {
+    flex-grow: 1;
+    padding: 15px 10px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 3px solid transparent; /* 未選中時的底線 */
+    transition: all 0.3s ease;
+}
+
+.tab-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.tab-link.active {
+    color: #ffcc00; /* 選中時的顏色 */
+    border-bottom-color: #ffcc00; /* 選中時的底線 */
+}
+
+.tab-content {
+    display: none; /* 預設隱藏所有分頁內容 */
+    animation: fadeIn 0.5s;
+}
+
+.tab-content.active {
+    display: block; /* 只顯示當前選中的分頁 */
+}
+
+/* 讓 container 保持置中 */
+.content-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* 表單群組樣式 */
+.form-group {
+    margin-top: 20px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #87CEEB;
+    font-weight: bold;
+}
+.form-group select, .form-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #3a8fb7;
+    background-color: #0c1445;
+    color: #fff;
+    font-size: 16px;
+}
+
+/* 原有 .container 樣式調整 */
+/* 我們不再需要 .container 的 margin-top，因為 body padding-top 已經處理了 */
+.container {
+    margin: 0;
+    padding: 0;
+}
+
+/* 其他您原有的 CSS 樣式保持不變 */
+
+
 body {
     padding-top: 60px; /* 為固定的導覽列預留空間 */
 }
