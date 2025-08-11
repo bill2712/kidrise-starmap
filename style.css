@@ -193,3 +193,28 @@ h1, h2 {
 .modal-close { position: absolute; top: 10px; right: 20px; color: #fff; font-size: 30px; cursor: pointer; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* --- 為新按鈕添加樣式 --- */
+#toggle-art-button {
+    background-color: #9b59b6; /* 紫色代表藝術感 */
+    color: white;
+}
+
+#toggle-art-button.active {
+    background-color: #e91e63; /* 啟用時變為粉紅色 */
+}
+
+/* 讓所有控制按鈕風格統一 */
+.control-button, #locationButton, #skyview-toggle {
+    border: none;
+    padding: 10px 15px; /* 稍微調整 padding */
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px; /* 統一字體大小以容納更多按鈕 */
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.control-button:active, #locationButton:active, #skyview-toggle:active {
+    transform: scale(0.95);
+}
