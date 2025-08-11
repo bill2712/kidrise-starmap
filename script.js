@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    // --- 元素定義 ---
+    // --- 元素定義 (無修改) ---
     const tabLinks = document.querySelectorAll('.tab-link');
     const tabContents = document.querySelectorAll('.tab-content');
     const observatorySelect = document.getElementById('observatory-select');
@@ -16,12 +16,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const datalist = document.getElementById('celestial-objects');
     const storyModal = document.getElementById('storyModal');
     
-    // --- 狀態變數 ---
+    // --- 狀態變數 (無修改) ---
     let isSkyviewActive = false;
     let isArtActive = false;
     let celestialData = [];
 
-    // --- 星圖設定 ---
+    // --- 星圖設定 (關鍵修正) ---
     const celestialConfig = {
         width: 0, 
         projection: "stereographic",
@@ -42,10 +42,29 @@ document.addEventListener("DOMContentLoaded", function() {
             names: true, proper: true, namelimit: 2.5,
             namestyle: { fill: "#ddddff", font: "14px 'Helvetica', Arial, sans-serif" }
         },
+        // ===================================
+        // =========== 修正部分 START ===========
+        // ===================================
         planets: {
-            show: true, symbolType: "disk",
+            show: true, 
+            symbolType: "disk",
+            // 之前遺漏了這個 symbols 物件，現在將它加回來
+            symbols: {
+              "sol": {symbol: "☉", fill: "#ffcc00"},
+              "lun": {symbol: "☽", fill: "#f0f0f0"},
+              "mer": {symbol: "☿", fill: "#a9a9a9"},
+              "ven": {symbol: "♀", fill: "#f0e68c"},
+              "mar": {symbol: "♂", fill: "#ff4500"},
+              "jup": {symbol: "♃", fill: "#c2b280"},
+              "sat": {symbol: "♄", fill: "#f5deb3"},
+              "ura": {symbol: "♅", fill: "#afeeee"},
+              "nep": {symbol: "♆", fill: "#4169e1"}
+            },
             style: { width: 2 }
         },
+        // ===================================
+        // ============ 修正部分 END ============
+        // ===================================
         constellations: {
             show: true, names: true,
             namestyle: { fill: "#87CEEB", font: "16px 'Lucida Sans Unicode', sans-serif" },
@@ -64,6 +83,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
     
+    // (其餘所有程式碼與上一版完全相同，此處為求完整性一併提供)
+    
     const constellationArt = {
       images: true,
       imageStyle: { width: 0.8, opacity: 0.4 },
@@ -75,7 +96,6 @@ document.addEventListener("DOMContentLoaded", function() {
       ]
     };
 
-    // --- 初始化與事件監聽 ---
     Celestial.display(celestialConfig);
     
     tabLinks.forEach(link => {
@@ -115,10 +135,7 @@ document.addEventListener("DOMContentLoaded", function() {
     clearButton.addEventListener('click', () => clearSearch(false));
     searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') findCelestialObject(); });
 
-    // --- 功能函數 ---
-
     function setupStorybook() {
-        // 這是一個小修改，將星座故事書從靜態HTML移到JS動態生成，確保它在「知識」分頁
         const storybookContainer = document.createElement('div');
         storybookContainer.className = 'storybook-grid';
         const templates = document.getElementById('storybook-templates');
@@ -220,7 +237,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function getLocation() {
         if (navigator.geolocation) {
-            messageElement.innerText = "正在獲取位置...";
+            messageElement.innerText = "正在獲取您的位置...";
             navigator.geolocation.getCurrentPosition(showPosition, showError, { timeout: 10000, enableHighAccuracy: true });
         } else { messageElement.innerText = "您的瀏覽器不支援定位。"; }
     }
