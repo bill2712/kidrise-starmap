@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     // --- 元素定義 ---
-    // 分頁系統
+    const toggleArtButton = document.getElementById('toggle-art-button');
+    // (其他元素定義保持不變)
     const tabLinks = document.querySelectorAll('.tab-link');
     const tabContents = document.querySelectorAll('.tab-content');
-    
-    // 星空圖頁面
+    const observatorySelect = document.getElementById('observatory-select');
     const messageElement = document.getElementById('message');
     const locationButton = document.getElementById('locationButton');
     const skyviewToggleButton = document.getElementById('skyview-toggle');
@@ -15,20 +15,110 @@ document.addEventListener("DOMContentLoaded", function() {
     const searchButton = document.getElementById('search-button');
     const clearButton = document.getElementById('clear-button');
     const datalist = document.getElementById('celestial-objects');
-    
-    // 目標規劃頁面
-    const observatorySelect = document.getElementById('observatory-select');
-
-    // 故事書 Modal
     const storyModal = document.getElementById('storyModal');
     
     // --- 狀態變數 ---
     let isSkyviewActive = false;
+    let isArtActive = false; // 新增：追蹤星座圖案是否開啟
     let celestialData = [];
 
-    // --- 初始化與事件監聽 ---
+    // --- 星圖設定 (視覺優化) ---
+    const celestialConfig = {
+        // --- 既有設定 ---
+        width: 0, 
+        projection: "stereographic",
+        transform: "equatorial",
+        background: { fill: "#000", stroke: "#000" },
+        datapath: "/kidrise-starmap/data/",
+        interactive: true,
+        zoombuttons: false,
+        controls: true,
+        // --- 視覺優化 START ---
+        stars: {
+            show: true, limit: 6, colors: true,
+            style: { fill: "#ffffff", opacity: 1, width: 1.5 }, // 稍微加粗星星
+            names: true, proper: true, namelimit: 2.5,
+            namestyle: { fill: "#ddddff", font: "14px 'Helvetica', Arial, sans-serif" } // 加大名稱字體
+        },
+        planets: {
+            show: true, symbolType: "disk",
+            style: { width: 2 } // 稍微加粗行星
+        },
+        constellations: {
+            show: true, names: true,
+            namestyle: { fill: "#87CEEB", font: "16px 'Lucida Sans Unicode', sans-serif" }, // 加大星座名稱
+            lines: true,
+            linestyle: { stroke: "#5594b8", width: 1.5, opacity: 0.8 }, // 稍微加粗線條
+            // **全新：預設不顯示星座圖案**
+            images: false 
+        },
+        // --- 視覺優化 END ---
+        horizon: {
+            show: true,
+            stroke: "#3a8fb7",
+            width: 1.5,
+            cardinal: true,
+            cardinalstyle: { fill: "#87CEEB", font: "bold 16px 'Helvetica', Arial, sans-serif", offset: 14 }
+        },
+        mw: {
+            show: true,
+            style: { fill: "#ffffff", opacity: 0.15 }
+        },
+        callback: function(error) {
+            if (error) { console.error("Celestial Error:", error); return; }
+            loadCelestialDataForSearch();
+            setTimeout(getLocation, 500);
+        }
+    };
+    
+    // **全新：定義星座圖案的設定**
+    const constellationArt = {
+      images: true,
+      imageStyle: {
+        width: 0.8,  // 圖片縮放比例
+        opacity: 0.4 // 圖片透明度
+      },
+      // 圖片與星座的對應關係
+      imageList: [
+        {c:"ori", f:"/kidrise-starmap/images/constellations/ori.png"},
+        {c:"uma", f:"/kidrise-starmap/images/constellations/uma.png"},
+        {c:"cas", f:"/kidrise-starmap/images/constellations/cas.png"},
+        {c:"sco", f:"/kidrise-starmap/images/constellations/sco.png"}
+      ]
+    };
 
-    // 1. 分頁切換邏輯
+    // --- 初始化星圖 ---
+    Celestial.display(celestialConfig);
+    
+    // --- 事件監聽 ---
+    // (除了新增的 toggleArtButton，其他保持不變)
+    toggleArtButton.addEventListener('click', toggleConstellationArt);
+    
+    // --- 新功能函數：切換星座圖案 ---
+    function toggleConstellationArt() {
+        isArtActive = !isArtActive; // 切換狀態
+
+        if (isArtActive) {
+            toggleArtButton.textContent = '🎨 隱藏圖案';
+            toggleArtButton.classList.add('active');
+            // 套用星座圖案設定
+            Celestial.apply({ constellations: constellationArt });
+        } else {
+            toggleArtButton.textContent = '🎨 顯示圖案';
+            toggleArtButton.classList.remove('active');
+            // 移除星座圖案設定 (恢復成 config 的預設值)
+            Celestial.apply({ constellations: { images: false } });
+        }
+    }
+
+    //
+    // ===================================================================
+    // ||                                                               ||
+    // ||   所有其他既有的程式碼 (分頁邏輯、尋星、定位等) 在此保持不變     ||
+    // ||                                                               ||
+    // ===================================================================
+    //
+    
     tabLinks.forEach(link => {
         link.addEventListener('click', () => {
             const tabId = link.dataset.tab;
@@ -39,7 +129,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // 2. 遠端天文台選擇邏輯
     const observatories = {
         "T11,US": { name: "New Mexico, USA", location: [32.90, -105.53] },
         "T32,AU": { name: "Siding Spring, Australia", location: [-31.27, 149.06] },
@@ -49,22 +138,17 @@ document.addEventListener("DOMContentLoaded", function() {
         const selectedValue = observatorySelect.value;
         if (selectedValue && observatories[selectedValue]) {
             const obs = observatories[selectedValue];
-            // 在星圖的訊息列上顯示提示
             const starMapMessage = document.getElementById('message');
             starMapMessage.innerText = `地點已設為 ${obs.name}`;
-            
             Celestial.display({ location: obs.location });
-            
-            // 短暫延遲後提示用戶，並自動跳轉
             setTimeout(() => {
                 alert(`已將觀測地點設為 ${obs.name}，現在將跳轉回「星空圖」分頁。`);
                 document.querySelector('.tab-link[data-tab="starmap"]').click();
-                setTimeout(() => { starMapMessage.innerText = ''; }, 3000); // 3秒後清除訊息
+                setTimeout(() => { starMapMessage.innerText = ''; }, 3000);
             }, 300);
         }
     });
     
-    // 3. 星空圖相關按鈕事件監聽
     locationButton.addEventListener('click', getLocation);
     zoomInButton.addEventListener('click', () => zoom(0.8));
     zoomOutButton.addEventListener('click', () => zoom(1.25));
@@ -72,62 +156,6 @@ document.addEventListener("DOMContentLoaded", function() {
     searchButton.addEventListener('click', findCelestialObject);
     clearButton.addEventListener('click', () => clearSearch(false));
     searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') findCelestialObject(); });
-
-
-    // --- 星圖設定 ---
-    const celestialConfig = {
-        width: 0, 
-        projection: "stereographic",
-        transform: "equatorial",
-        background: { fill: "#000", stroke: "#000" },
-        datapath: "/kidrise-starmap/data/",
-        interactive: true,
-        zoombuttons: false,
-        controls: true,
-        horizon: {
-            show: true,
-            stroke: "#3a8fb7",
-            width: 1.5,
-            cardinal: true,
-            cardinalstyle: {
-                fill: "#87CEEB",
-                font: "bold 16px 'Helvetica', Arial, sans-serif",
-                offset: 14
-            }
-        },
-        stars: {
-            show: true, limit: 6, colors: true,
-            style: { fill: "#ffffff", opacity: 1 },
-            names: true, proper: true, namelimit: 2.5,
-            namestyle: { fill: "#ddddff", font: "13px 'Helvetica', Arial, sans-serif" }
-        },
-        planets: {
-            show: true, symbolType: "disk"
-        },
-        constellations: {
-            show: true, names: true,
-            namestyle: { fill: "#87CEEB", font: "14px 'Lucida Sans Unicode', sans-serif" },
-            lines: true,
-            linestyle: { stroke: "#3a8fb7", width: 1, opacity: 0.8 }
-        },
-        mw: {
-            show: true,
-            style: { fill: "#ffffff", opacity: 0.15 }
-        },
-        callback: function(error) {
-            if (error) {
-                console.error("Celestial Error:", error);
-                return;
-            }
-            loadCelestialDataForSearch();
-            setTimeout(getLocation, 500);
-        }
-    };
-
-    // --- 初始化星圖 ---
-    Celestial.display(celestialConfig);
-
-    // --- 所有功能函數 ---
 
     function loadCelestialDataForSearch() {
         celestialData = [];
@@ -194,7 +222,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         Celestial.skyview({ "follow": "center" });
                     } else { 
                         messageElement.innerText = '方向感測器權限遭拒。'; 
-                        // 自動切換回關閉狀態
                         isSkyviewActive = false;
                         skyviewToggleButton.textContent = '🔭 開啟陀螺儀';
                         skyviewToggleButton.classList.remove('active');
@@ -233,7 +260,6 @@ document.addEventListener("DOMContentLoaded", function() {
         messageElement.innerText = errors[error.code] || '獲取位置時發生未知錯誤。';
     }
     
-    // 將 Modal 函數掛載到 window，讓 HTML onclick 可以呼叫
     window.showStoryModal = function(title, imageSrc, story) {
         const modalTitle = document.getElementById('modalTitle');
         const modalImage = document.getElementById('modalImage');
@@ -250,5 +276,4 @@ document.addEventListener("DOMContentLoaded", function() {
     window.onclick = function(event) {
         if (event.target == storyModal) closeStoryModal();
     };
-
 });
