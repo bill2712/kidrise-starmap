@@ -1,0 +1,124 @@
+/* --- 全局樣式 --- */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #000;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+h1, h2 {
+    color: #ffcc00; /* 星星的黃色 */
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(255, 204, 0, 0.5);
+}
+p {
+    font-size: 16px;
+}
+
+/* --- 區塊樣式 --- */
+.section {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 25px;
+    margin: 30px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* --- 即時星空圖 --- */
+#starmap-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background-color: #000;
+    border-radius: 15px;
+    overflow: hidden;
+}
+#celestial-map {
+    width: 100%;
+    height: 100%;
+}
+#starmap-controls {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 10px 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+#locationButton {
+    background-color: #ffcc00;
+    color: #000;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+#locationButton:hover { background-color: #ffd633; }
+#message { font-size: 12px; color: #ffaf42; margin-top: 5px; height: 15px; }
+
+/* --- 星座故事書 --- */
+.storybook-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+}
+.constellation-card {
+    background-color: #1a2366;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.constellation-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(46, 130, 255, 0.4);
+}
+.constellation-card img { width: 80px; height: 80px; }
+.constellation-card h3 { color: #89cff0; margin: 10px 0 0 0; font-size: 18px; }
+
+/* --- 戶外羅盤 --- */
+.compass-steps ol { padding-left: 25px; }
+.compass-steps li { margin-bottom: 10px; }
+
+/* --- 彈出視窗 (Modal) --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s;
+}
+.modal-content {
+    background-color: #1a2366;
+    padding: 30px;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 5px 25px rgba(46, 130, 255, 0.5);
+    animation: slideIn 0.4s;
+}
+.modal-close {
+    position: absolute;
+    top: 10px; right: 20px;
+    color: #fff; font-size: 30px; cursor: pointer;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
