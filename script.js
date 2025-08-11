@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     // --- 元素定義 ---
+    // 分頁系統
+    const tabLinks = document.querySelectorAll('.tab-link');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    // 星空圖頁面
     const messageElement = document.getElementById('message');
     const locationButton = document.getElementById('locationButton');
     const skyviewToggleButton = document.getElementById('skyview-toggle');
@@ -10,11 +15,64 @@ document.addEventListener("DOMContentLoaded", function() {
     const searchButton = document.getElementById('search-button');
     const clearButton = document.getElementById('clear-button');
     const datalist = document.getElementById('celestial-objects');
+    
+    // 目標規劃頁面
+    const observatorySelect = document.getElementById('observatory-select');
+
+    // 故事書 Modal
     const storyModal = document.getElementById('storyModal');
     
     // --- 狀態變數 ---
     let isSkyviewActive = false;
     let celestialData = [];
+
+    // --- 初始化與事件監聽 ---
+
+    // 1. 分頁切換邏輯
+    tabLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            const tabId = link.dataset.tab;
+            tabLinks.forEach(l => l.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            link.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+
+    // 2. 遠端天文台選擇邏輯
+    const observatories = {
+        "T11,US": { name: "New Mexico, USA", location: [32.90, -105.53] },
+        "T32,AU": { name: "Siding Spring, Australia", location: [-31.27, 149.06] },
+        "T7,ES": { name: "Siding Spring, Spain", location: [38.43, -2.54] }
+    };
+    observatorySelect.addEventListener('change', () => {
+        const selectedValue = observatorySelect.value;
+        if (selectedValue && observatories[selectedValue]) {
+            const obs = observatories[selectedValue];
+            // 在星圖的訊息列上顯示提示
+            const starMapMessage = document.getElementById('message');
+            starMapMessage.innerText = `地點已設為 ${obs.name}`;
+            
+            Celestial.display({ location: obs.location });
+            
+            // 短暫延遲後提示用戶，並自動跳轉
+            setTimeout(() => {
+                alert(`已將觀測地點設為 ${obs.name}，現在將跳轉回「星空圖」分頁。`);
+                document.querySelector('.tab-link[data-tab="starmap"]').click();
+                setTimeout(() => { starMapMessage.innerText = ''; }, 3000); // 3秒後清除訊息
+            }, 300);
+        }
+    });
+    
+    // 3. 星空圖相關按鈕事件監聽
+    locationButton.addEventListener('click', getLocation);
+    zoomInButton.addEventListener('click', () => zoom(0.8));
+    zoomOutButton.addEventListener('click', () => zoom(1.25));
+    skyviewToggleButton.addEventListener('click', toggleSkyView);
+    searchButton.addEventListener('click', findCelestialObject);
+    clearButton.addEventListener('click', () => clearSearch(false));
+    searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') findCelestialObject(); });
+
 
     // --- 星圖設定 ---
     const celestialConfig = {
@@ -22,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
         projection: "stereographic",
         transform: "equatorial",
         background: { fill: "#000", stroke: "#000" },
-        datapath: "data/",
+        datapath: "/kidrise-starmap/data/",
         interactive: true,
         zoombuttons: false,
         controls: true,
@@ -57,31 +115,30 @@ document.addEventListener("DOMContentLoaded", function() {
             style: { fill: "#ffffff", opacity: 0.15 }
         },
         callback: function(error) {
-            if (error) return console.warn(error);
+            if (error) {
+                console.error("Celestial Error:", error);
+                return;
+            }
             loadCelestialDataForSearch();
             setTimeout(getLocation, 500);
         }
     };
 
-    // --- 初始化與事件監聽 ---
+    // --- 初始化星圖 ---
     Celestial.display(celestialConfig);
-    
-    locationButton.addEventListener('click', getLocation);
-    zoomInButton.addEventListener('click', () => zoom(0.8));
-    zoomOutButton.addEventListener('click', () => zoom(1.25));
-    skyviewToggleButton.addEventListener('click', toggleSkyView);
-    searchButton.addEventListener('click', findCelestialObject);
-    clearButton.addEventListener('click', clearSearch);
-    searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') findCelestialObject(); });
 
-    // --- 功能函數 ---
+    // --- 所有功能函數 ---
 
     function loadCelestialDataForSearch() {
         celestialData = [];
-        Celestial.constellations.forEach(c => celestialData.push({ name: c.name, type: 'constellation', id: c.id }));
-        Celestial.data.stars.features.forEach(s => {
-            if (s.properties?.name) celestialData.push({ name: s.properties.name, type: 'star', id: s.id });
-        });
+        if (Celestial.constellations) {
+            Celestial.constellations.forEach(c => celestialData.push({ name: c.name, type: 'constellation', id: c.id }));
+        }
+        if (Celestial.data.stars) {
+            Celestial.data.stars.features.forEach(s => {
+                if (s.properties?.name) celestialData.push({ name: s.properties.name, type: 'star', id: s.id });
+            });
+        }
         const planets = ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"];
         planets.forEach(p => celestialData.push({ name: p, type: 'planet' }));
         datalist.innerHTML = celestialData.map(item => `<option value="${item.name}"></option>`).join('');
@@ -135,7 +192,13 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (state === 'granted') {
                         window.addEventListener('deviceorientation', orientationHandler);
                         Celestial.skyview({ "follow": "center" });
-                    } else { messageElement.innerText = '方向感測器權限遭拒。'; isSkyviewActive = false; }
+                    } else { 
+                        messageElement.innerText = '方向感測器權限遭拒。'; 
+                        // 自動切換回關閉狀態
+                        isSkyviewActive = false;
+                        skyviewToggleButton.textContent = '🔭 開啟陀螺儀';
+                        skyviewToggleButton.classList.remove('active');
+                    }
                 }).catch(console.error);
             } else {
                 window.addEventListener('deviceorientation', orientationHandler);
@@ -153,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function getLocation() {
         if (navigator.geolocation) {
-            messageElement.innerText = "正在獲取位置...";
+            messageElement.innerText = "正在獲取您的位置...";
             navigator.geolocation.getCurrentPosition(showPosition, showError, { timeout: 10000, enableHighAccuracy: true });
         } else { messageElement.innerText = "您的瀏覽器不支援定位。"; }
     }
@@ -170,10 +233,15 @@ document.addEventListener("DOMContentLoaded", function() {
         messageElement.innerText = errors[error.code] || '獲取位置時發生未知錯誤。';
     }
     
+    // 將 Modal 函數掛載到 window，讓 HTML onclick 可以呼叫
     window.showStoryModal = function(title, imageSrc, story) {
-        document.getElementById('modalTitle').innerText = title;
-        document.getElementById('modalImage').src = imageSrc;
-        document.getElementById('modalStory').innerText = story;
+        const modalTitle = document.getElementById('modalTitle');
+        const modalImage = document.getElementById('modalImage');
+        const modalStory = document.getElementById('modalStory');
+
+        if(modalTitle) modalTitle.innerText = title;
+        if(modalImage) modalImage.src = imageSrc;
+        if(modalStory) modalStory.innerText = story;
         if (storyModal) storyModal.style.display = 'flex';
     };
     window.closeStoryModal = function() {
@@ -182,4 +250,5 @@ document.addEventListener("DOMContentLoaded", function() {
     window.onclick = function(event) {
         if (event.target == storyModal) closeStoryModal();
     };
+
 });
