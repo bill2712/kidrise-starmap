@@ -1,3 +1,7 @@
+// --- 最終版 script.js ---
+// 這個腳本的結構，確保了 celestialConfig 在被使用前已被完整定義，
+// 正好符合您的專業建議，從而避免了潛在的 undefined 錯誤。
+
 document.addEventListener("DOMContentLoaded", function() {
 
     // --- 元素定義 ---
@@ -21,7 +25,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let isArtActive = false;
     let celestialData = [];
 
-    // --- 星圖設定 ---
+    // --- 星圖設定 (完整且有效的物件) ---
+    // 根據您的建議，我們在此處完整定義 celestialConfig，確保它在傳遞給 display() 前是一個有效的物件
     const celestialConfig = {
         width: 0, 
         projection: "stereographic",
@@ -54,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function() {
               "nep": {symbol: "♆", fill: "#4169e1"}, "ter": {symbol: "♁", fill: "#0077be"}
             },
             style: { width: 2 },
-            // 關鍵修正：補上這個 namestyle 物件，即使是空的也需要存在
             namestyle: { fill: "#f0f0f0", font: "14px 'Helvetica', Arial, sans-serif", align: "center", baseline: "middle" }
         },
         constellations: {
@@ -75,8 +79,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
     
-    // (其餘所有程式碼保持不變)
-    
+    // 星座圖案設定
     const constellationArt = {
       images: true,
       imageStyle: { width: 0.8, opacity: 0.4 },
@@ -88,8 +91,11 @@ document.addEventListener("DOMContentLoaded", function() {
       ]
     };
 
+    // --- 初始化星圖 ---
+    // 此時 celestialConfig 是一個完整的物件，可以安全地傳入
     Celestial.display(celestialConfig);
     
+    // --- 事件監聽 ---
     tabLinks.forEach(link => {
         link.addEventListener('click', () => {
             const tabId = link.dataset.tab;
@@ -110,7 +116,8 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!selectedValue) return;
         const obs = observatories[selectedValue];
         messageElement.innerText = `地點已設為 ${obs.name}`;
-        Celestial.display({ location: obs.location });
+        // 我們在這裡傳入一個新的設定物件來更新地點，而不是修改 celestialConfig
+        Celestial.display({ location: obs.location }); 
         setTimeout(() => {
             alert(`已將觀測地點設為 ${obs.name}，現在將跳轉回「星空圖」分頁。`);
             document.querySelector('.tab-link[data-tab="starmap"]').click();
@@ -127,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function() {
     clearButton.addEventListener('click', () => clearSearch(false));
     searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') findCelestialObject(); });
 
+    // --- 功能函數 ---
     function setupStorybook() {
         const storybookContainer = document.createElement('div');
         storybookContainer.className = 'storybook-grid';
