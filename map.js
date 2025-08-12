@@ -1,4 +1,4 @@
-// map.js (簡化版)
+// map.js (基於您提供的版本進行修正與簡化)
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
-    // --- UI 元素定義 (已簡化) ---
+    // --- UI 元素定義 ---
     const ui = {
         messageElement: document.getElementById('message'),
         locationButton: document.getElementById('locationButton'),
@@ -18,14 +18,55 @@ document.addEventListener("DOMContentLoaded", function() {
         zoomOutButton: document.getElementById('zoom-out'),
     };
 
-    // --- 星圖設定 (已簡化) ---
+    // --- 星圖設定 ---
     const celestialConfig = {
-        width: 0, projection: "stereographic", transform: "equatorial", background: { fill: "#000", stroke: "#000" }, datapath: "/data/", interactive: true, zoombuttons: false,
-        horizon: { show: true, stroke: "#3a8fb7", width: 1.5, cardinal: true, cardinalstyle: { fill: "#87CEEB", font: "bold 16px 'Helvetica', Arial, sans-serif", offset: 14 } },
-        stars: { show: true, limit: 6, colors: true, style: { fill: "#ffffff", opacity: 1, width: 1.5 }, names: true, proper: true, namelimit: 2.5, namestyle: { fill: "#ddddff", font: "14px 'Helvetica', Arial, sans-serif" } },
-        planets: { show: true, which: ["sol", "mer", "ven", "ter", "lun", "mar", "jup", "sat", "ura", "nep"], symbolType: "disk", symbols: { "sol": {symbol: "☉", fill: "#ffcc00"}, "lun": {symbol: "☽", fill: "#f0f0f0"}, "mer": {symbol: "☿", fill: "#a9a9a9"}, "ven": {symbol: "♀", fill: "#f0e68c"}, "mar": {symbol: "♂", fill: "#ff4500"}, "jup": {symbol: "♃", fill: "#c2b280"}, "sat": {symbol: "♄", fill: "#f5deb3"}, "ura": {symbol: "♅", fill: "#afeeee"}, "nep": {symbol: "♆", fill: "#4169e1"}, "ter": {symbol: "♁", fill: "#0077be"} }, style: { width: 2 }, namestyle: { fill: "#f0f0f0", font: "14px 'Helvetica', Arial, sans-serif", align: "center", baseline: "middle" } },
-        constellations: { show: true, names: true, namestyle: { fill: "#87CEEB", font: "16px 'Lucida Sans Unicode', sans-serif" }, lines: true, linestyle: { stroke: "#5594b8", width: 1.5, opacity: 0.8 } },
-        mw: { show: true, style: { fill: "#ffffff", opacity: 0.15 } },
+        width: 0, 
+        projection: "stereographic",
+        transform: "equatorial",
+        background: { fill: "#000", stroke: "#000" },
+        // 修正 (1)：使用在 GitHub Pages 上能運作的絕對路徑
+        datapath: "/kidrise-starmap/data/",
+        interactive: true,
+        zoombuttons: false, // 我們使用自訂的縮放按鈕
+        controls: false, // 因為移除了陀螺儀，所以設為 false
+        horizon: {
+            show: true,
+            stroke: "#3a8fb7",
+            width: 1.5,
+            cardinal: true,
+            cardinalstyle: { fill: "#87CEEB", font: "bold 16px 'Helvetica', Arial, sans-serif", offset: 14 }
+        },
+        stars: {
+            show: true, limit: 6, colors: true,
+            style: { fill: "#ffffff", opacity: 1, width: 1.5 },
+            names: true, proper: true, namelimit: 2.5,
+            namestyle: { fill: "#ddddff", font: "14px 'Helvetica', Arial, sans-serif" }
+        },
+        // 修正 (2)：補全 planets 設定，避免 TypeError 錯誤
+        planets: {
+            show: true, 
+            which: ["sol", "mer", "ven", "ter", "lun", "mar", "jup", "sat", "ura", "nep"],
+            symbolType: "disk",
+            symbols: {
+              "sol": {symbol: "☉", fill: "#ffcc00"}, "lun": {symbol: "☽", fill: "#f0f0f0"},
+              "mer": {symbol: "☿", fill: "#a9a9a9"}, "ven": {symbol: "♀", fill: "#f0e68c"},
+              "mar": {symbol: "♂", fill: "#ff4500"}, "jup": {symbol: "♃", fill: "#c2b280"},
+              "sat": {symbol: "♄", fill: "#f5deb3"}, "ura": {symbol: "♅", fill: "#afeeee"},
+              "nep": {symbol: "♆", fill: "#4169e1"}, "ter": {symbol: "♁", fill: "#0077be"}
+            },
+            style: { width: 2 },
+            namestyle: { fill: "#f0f0f0", font: "14px 'Helvetica', Arial, sans-serif" }
+        },
+        constellations: {
+            show: true, names: true,
+            namestyle: { fill: "#87CEEB", font: "16px 'Lucida Sans Unicode', sans-serif" },
+            lines: true,
+            linestyle: { stroke: "#5594b8", width: 1.5, opacity: 0.8 }
+        },
+        mw: {
+            show: true, style: { fill: "#ffffff", opacity: 0.15 }
+        },
+        // 修正 (3)：加入跨頁面位置讀取邏輯
         callback: function (err) {
           if (err) { return console.error("Celestial Error:", err); }
           
@@ -42,21 +83,9 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     // --- 初始化 ---
-  Celestial.display({
-    container: container,           // or "starmap-container"
-    projection: "stereographic",
-    transform: "equatorial",
-    datapath: "data/",              // e.g., data/stars.json, data/constellations.json...
-    controls: false,                // we provide our own buttons
-    stars: { show: true },
-    constellations: { show: true },
-    planets: { show: true },
-    mw: { show: true },
-    background: { fill: "#000", stroke: "#000" }
-  });
+    Celestial.display(celestialConfig);
 
-
-    // --- 事件監聽 (已簡化) ---
+    // --- 事件監聽 ---
     ui.locationButton.addEventListener('click', getLocation);
     ui.zoomInButton.addEventListener('click', () => zoomBy(0.8));
     ui.zoomOutButton.addEventListener('click', () => zoomBy(1.25));
@@ -72,12 +101,14 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
     
+    // 修正 (4)：恢復 zoomBy 函式
     function zoomBy(factor) {
       const currentScale = Celestial.zoom.scale();
       const center = [window.innerWidth / 2, window.innerHeight / 2];
       Celestial.zoom.to(currentScale * factor, center);
     }
 
+    // 修正 (5)：恢復 getLocation, showPosition, showError 函式
     function getLocation() {
         if (navigator.geolocation) {
             showMessage("正在獲取您的位置...", 0);
