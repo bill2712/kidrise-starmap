@@ -1,6 +1,8 @@
-/* style.css (最終完整版) */
+/* style.css (最終重構完整版) */
 
-/* --- 全局與導覽列 --- */
+/* =================================== */
+/* === 1. 全局與基礎佈局 (Global & Layout) === */
+/* =================================== */
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background-color: #000;
@@ -8,6 +10,39 @@ body {
     margin: 0;
     padding-top: 60px; /* 為固定的導覽列預留空間 */
 }
+
+.content-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.section {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+h2 {
+    color: #ffcc00;
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(255, 204, 0, 0.5);
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.intro-text {
+    text-align: center;
+    color: #ccc;
+    margin-top: 0;
+}
+
+/* =================================== */
+/* === 2. 頂部導覽列 (Navigation Bar) === */
+/* =================================== */
 .main-nav {
     display: flex;
     background-color: #1a2366;
@@ -18,6 +53,7 @@ body {
     width: 100%;
     z-index: 1000;
 }
+
 .nav-link {
     flex-grow: 1;
     padding: 15px 10px;
@@ -30,36 +66,20 @@ body {
     border-bottom: 3px solid transparent;
     transition: all 0.3s ease;
 }
+
 .nav-link:hover {
     background-color: rgba(255, 255, 255, 0.1);
     color: #fff;
 }
+
 .nav-link.active {
     color: #ffcc00;
     border-bottom-color: #ffcc00;
 }
-.content-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 15px;
-}
-.section {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    padding: 25px;
-    margin: 20px 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-}
-h2 {
-    color: #ffcc00;
-    text-align: center;
-    padding-bottom: 10px;
-    border-bottom: 2px solid rgba(255, 204, 0, 0.5);
-    margin-top: 0;
-}
-.intro-text { text-align: center; color: #ccc; margin-top: 0; }
 
-/* --- 星空圖頁面 --- */
+/* =================================== */
+/* === 3. 星空圖頁面 (Star Map Page) === */
+/* =================================== */
 #starmap-container { 
     position: relative; 
     width: 100%; 
@@ -69,18 +89,13 @@ h2 {
     border-radius: 15px; 
     overflow: hidden; 
 }
+
 #celestial-map { 
     width: 100%; 
     height: 100%; 
 }
-.map-controls-panel { 
-    display: flex; 
-    gap: 10px; 
-    justify-content: center; 
-    flex-wrap: wrap; 
-    margin-top: 15px; 
-    padding: 15px 0 0 0;
-}
+
+/* --- 星圖上的懸浮元件 --- */
 .zoom-controls { 
     position: absolute; 
     bottom: 20px; 
@@ -90,6 +105,81 @@ h2 {
     flex-direction: column; 
     gap: 10px; 
 }
+
+.corner-controls {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 20;
+}
+
+#message { 
+    width: auto;
+    max-width: 90%;
+    text-align: center; 
+    position: absolute; 
+    top: 10px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    z-index: 10; 
+    padding: 8px 15px;
+    font-weight: bold; 
+    color: #ffaf42; 
+    pointer-events: none; 
+    background-color: rgba(0,0,0,0.6);
+    border-radius: 10px;
+}
+
+/* --- 星圖下方的控制項 --- */
+.map-controls-panel { 
+    display: flex; 
+    gap: 25px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-top: 0;
+    padding: 0;
+}
+
+.control-group {
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.control-group h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #87CEEB;
+    font-size: 1.1em;
+}
+
+.control-group p {
+    margin-top: 0;
+    margin-bottom: 15px;
+    min-height: 40px;
+    color: #ccc;
+    font-size: 0.9em;
+}
+
+/* --- 各類按鈕樣式 --- */
+.control-button { 
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 20px; 
+    cursor: pointer; 
+    font-size: 14px; 
+    font-weight: 600; 
+    transition: all 0.2s; 
+}
+
+.control-button:active { 
+    transform: scale(0.95); 
+}
+
 .zoom-button { 
     width: 50px; 
     height: 50px; 
@@ -106,45 +196,10 @@ h2 {
     user-select: none; 
     transition: all 0.2s; 
 }
-.control-button { 
-    border: none; 
-    padding: 10px 20px; 
-    border-radius: 20px; 
-    cursor: pointer; 
-    font-size: 14px; 
-    font-weight: 600; 
-    transition: all 0.2s; 
-}
-.zoom-button:active, .control-button:active { 
+.zoom-button:active { 
     transform: scale(0.95); 
 }
-#locationButton { background-color: #ffcc00; color: #000; }
-#skyview-toggle { background-color: #3498db; color: white; }
-#skyview-toggle.active { background-color: #e74c3c; }
-#toggle-art-button { background-color: #9b59b6; color: white; }
-#toggle-art-button.active { background-color: #e91e63; }
-#message { 
-    width: auto; /* 自動寬度 */
-    max-width: 90%;
-    text-align: center; 
-    position: absolute; 
-    top: 10px; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    z-index: 10; 
-    padding: 8px 15px; /* 增加 padding */
-    font-weight: bold; 
-    color: #ffaf42; 
-    pointer-events: none; 
-    background-color: rgba(0,0,0,0.6); /* 加深背景 */
-    border-radius: 10px;
-}
-.corner-controls {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 20;
-}
+
 .corner-controls .control-button {
     width: 50px;
     height: 50px;
@@ -156,7 +211,18 @@ h2 {
     justify-content: center;
 }
 
-/* --- 規劃 & 知識頁面 --- */
+#locationButton { background-color: #ffcc00; color: #000; }
+#skyview-toggle { background-color: #3498db; color: white; }
+#skyview-toggle.active { background-color: #e74c3c; }
+#toggle-art-button { background-color: #9b59b6; color: white; }
+#toggle-art-button.active { background-color: #e91e63; }
+
+
+/* ======================================= */
+/* === 4. 規劃 & 知識頁面 (Planner & Knowledge) === */
+/* ======================================= */
+
+/* --- 表單 --- */
 .form-group { 
     margin-top: 20px; 
 }
@@ -176,89 +242,16 @@ h2 {
     color: #fff; 
     font-size: 16px; 
 }
-.storybook-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-    gap: 20px; 
-}
-.constellation-card { 
-    background-color: #1a2366; 
-    border-radius: 10px; 
-    padding: 20px; 
-    text-align: center; 
-    cursor: pointer; 
-    transition: all 0.3s; 
-}
-.constellation-card:hover { 
-    transform: translateY(-10px); 
-    box-shadow: 0 10px 20px rgba(46, 130, 255, 0.4); 
-}
-.constellation-card img { 
-    width: 80px; 
-    height: 80px; 
-}
-.constellation-card h3 { 
-    color: #89cff0; 
-    margin: 10px 0 0 0; 
-    font-size: 18px; 
-}
 
-/* --- 彈出式 Modal & 動畫 --- */
-.modal { 
-    display: none; 
-    position: fixed; 
-    z-index: 1001; 
-    left: 0; top: 0; 
-    width: 100%; 
-    height: 100%; 
-    background-color: rgba(0,0,0,0.7); 
-    justify-content: center; 
-    align-items: center; 
-    animation: fadeIn 0.3s; 
-}
-.modal-content { 
-    background-color: #1a2366; 
-    padding: 30px; 
-    border-radius: 15px; 
-    width: 80%; 
-    max-width: 500px; 
-    text-align: center; 
-    position: relative; 
-}
-.modal-close { 
-    position: absolute; 
-    top: 10px; 
-    right: 20px; 
-    color: #fff; 
-    font-size: 30px; 
-    cursor: pointer; 
-}
-@keyframes fadeIn { 
-    from { opacity: 0; } 
-    to { opacity: 1; } 
-}
-@keyframes blink { 
-    50% { opacity: 0.3; } 
-}
-.target-indicator { 
-    animation: blink 1.5s linear infinite; 
-    fill: none; 
-    stroke: #FFD700; 
-    stroke-width: 2px; 
-}
-
-/* --- 全新知識庫頁面樣式 --- */
-
+/* --- 知識庫頁面佈局 --- */
 .knowledge-container {
     display: flex;
     gap: 20px;
     align-items: flex-start;
 }
-
-/* 側邊導覽列 */
 .side-nav {
-    position: sticky; /* 滾動時固定在原地 */
-    top: 80px; /* 距離頂部 (main-nav高度 + 一些間距) */
+    position: sticky;
+    top: 80px;
     width: 220px;
     flex-shrink: 0;
     height: calc(100vh - 100px);
@@ -266,78 +259,50 @@ h2 {
     border-right: 1px solid #3a8fb7;
     padding-right: 15px;
 }
-.side-nav h3 {
-    color: #ffcc00;
-    margin-top: 0;
-}
-.side-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.side-nav ul ul {
-    padding-left: 15px;
-    margin-top: 5px;
-}
-.side-nav a {
-    display: block;
-    color: #ccc;
-    text-decoration: none;
-    padding: 8px 10px;
-    border-radius: 5px;
-    transition: all 0.2s ease;
-}
-.side-nav a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
-}
-.side-nav a.active {
-    background-color: #3a8fb7;
-    color: #fff;
-    font-weight: bold;
-}
+.side-nav h3 { color: #ffcc00; margin-top: 0; }
+.side-nav ul { list-style: none; padding: 0; margin: 0; }
+.side-nav ul ul { padding-left: 15px; margin-top: 5px; }
+.side-nav a { display: block; color: #ccc; text-decoration: none; padding: 8px 10px; border-radius: 5px; transition: all 0.2s ease; }
+.side-nav a:hover { background-color: rgba(255, 255, 255, 0.1); color: #fff; }
+.side-nav a.active { background-color: #3a8fb7; color: #fff; font-weight: bold; }
 
-/* 內容區 */
-.content-well {
-    flex-grow: 1;
-    min-width: 0; /* 防止 flex 佈局溢出 */
-}
-.content-well section {
-    margin-bottom: 40px;
-    padding-top: 20px;
-    border-top: 1px dashed #3a8fb7;
-}
-.content-well h1, .content-well h2, .content-well h3, .content-well h4 {
-    scroll-margin-top: 80px; /* 讓錨點跳轉時，標題不會被頂部導覽列遮住 */
-}
-.guide-title { text-align: left; }
-.guide-intro { color: #ddd; font-size: 1.1em; }
-.guide-footer { margin-top: 50px; padding-top: 20px; border-top: 2px solid #ffcc00; }
+.content-well { flex-grow: 1; min-width: 0; }
+.content-well section { margin-bottom: 40px; padding-top: 20px; border-top: 1px dashed #3a8fb7; }
+.content-well h1, .content-well h2, .content-well h3, .content-well h4 { scroll-margin-top: 80px; } /* 錨點跳轉偏移 */
 
-/* 表格樣式 */
-.guide-table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-    font-size: 0.9em;
-}
-.guide-table th, .guide-table td {
-    border: 1px solid #3a8fb7;
-    padding: 10px;
-    text-align: left;
-}
-.guide-table thead {
-    background-color: #1a2366;
-    color: #ffcc00;
-    font-weight: bold;
-}
-.guide-table tbody tr:nth-child(odd) {
-    background-color: rgba(255, 255, 255, 0.05);
-}
+/* --- 知識庫頁面元件 --- */
+.guide-table { width: 100%; margin-top: 20px; border-collapse: collapse; font-size: 0.9em; }
+.guide-table th, .guide-table td { border: 1px solid #3a8fb7; padding: 10px; text-align: left; }
+.guide-table thead { background-color: #1a2366; color: #ffcc00; font-weight: bold; }
+.guide-table tbody tr:nth-child(odd) { background-color: rgba(255, 255, 255, 0.05); }
 
-/* 響應式設計：在小螢幕上隱藏側邊欄 */
+.storybook-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+.constellation-card { background-color: #1a2366; border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s; }
+.constellation-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(46, 130, 255, 0.4); }
+.constellation-card img { width: 80px; height: 80px; }
+.constellation-card h3 { color: #89cff0; margin: 10px 0 0 0; font-size: 18px; }
+
+/* ======================================= */
+/* === 5. 彈出式 Modal & 動畫 (Modal & Animations) === */
+/* ======================================= */
+.modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); justify-content: center; align-items: center; animation: fadeIn 0.3s; }
+.modal-content { background-color: #1a2366; padding: 30px; border-radius: 15px; width: 80%; max-width: 500px; text-align: center; position: relative; }
+.modal-close { position: absolute; top: 10px; right: 20px; color: #fff; font-size: 30px; cursor: pointer; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes blink { 50% { opacity: 0.3; } }
+
+.target-indicator { animation: blink 1.5s linear infinite; fill: none; stroke: #FFD700; stroke-width: 2px; }
+
+
+/* =================================== */
+/* === 6. 響應式設計 (Responsive) === */
+/* =================================== */
 @media (max-width: 768px) {
     .side-nav {
-        display: none;
+        display: none; /* 在手機上隱藏側邊導覽 */
+    }
+    .nav-link {
+        font-size: 14px; /* 縮小導覽列字體 */
     }
 }
