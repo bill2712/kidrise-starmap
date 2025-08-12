@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    // --- 元素定義 (無修改) ---
+    // --- All element definitions and state variables remain the same ---
     const tabLinks = document.querySelectorAll('.tab-link');
     const tabContents = document.querySelectorAll('.tab-content');
     const observatorySelect = document.getElementById('observatory-select');
@@ -15,8 +15,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const clearButton = document.getElementById('clear-button');
     const datalist = document.getElementById('celestial-objects');
     const storyModal = document.getElementById('storyModal');
-    
-    // --- 狀態變數 (無修改) ---
     let isSkyviewActive = false;
     let isArtActive = false;
     let celestialData = [];
@@ -42,31 +40,23 @@ document.addEventListener("DOMContentLoaded", function() {
             names: true, proper: true, namelimit: 2.5,
             namestyle: { fill: "#ddddff", font: "14px 'Helvetica', Arial, sans-serif" }
         },
-        // ===================================
-        // =========== 最終修正部分 START ==========
-        // ===================================
         planets: {
             show: true, 
-            // **新增：告訴函式庫要顯示哪些行星**
             which: ["sol", "mer", "ven", "ter", "lun", "mar", "jup", "sat", "ura", "nep"],
             symbolType: "disk",
             symbols: {
-              "sol": {symbol: "☉", fill: "#ffcc00"},
-              "lun": {symbol: "☽", fill: "#f0f0f0"},
-              "mer": {symbol: "☿", fill: "#a9a9a9"},
-              "ven": {symbol: "♀", fill: "#f0e68c"},
-              "mar": {symbol: "♂", fill: "#ff4500"},
-              "jup": {symbol: "♃", fill: "#c2b280"},
-              "sat": {symbol: "♄", fill: "#f5deb3"},
-              "ura": {symbol: "♅", fill: "#afeeee"},
-              "nep": {symbol: "♆", fill: "#4169e1"},
-              "ter": {symbol: "♁", fill: "#0077be"} // 地球
+              "sol": {symbol: "☉", fill: "#ffcc00"}, "lun": {symbol: "☽", fill: "#f0f0f0"},
+              "mer": {symbol: "☿", fill: "#a9a9a9"}, "ven": {symbol: "♀", fill: "#f0e68c"},
+              "mar": {symbol: "♂", fill: "#ff4500"}, "jup": {symbol: "♃", fill: "#c2b280"},
+              "sat": {symbol: "♄", fill: "#f5deb3"}, "ura": {symbol: "♅", fill: "#afeeee"},
+              "nep": {symbol: "♆", fill: "#4169e1"}, "ter": {symbol: "♁", fill: "#0077be"}
             },
-            style: { width: 2 }
+            style: { width: 2 },
+            // =======================================================
+            // =========== THE FINAL, DEFINITIVE FIX IS HERE ===========
+            namestyle: { fill: "#f0f0f0", font: "14px 'Helvetica', Arial, sans-serif", align: "center", baseline: "middle" }
+            // =======================================================
         },
-        // ===================================
-        // ============ 最終修正部分 END ============
-        // ===================================
         constellations: {
             show: true, names: true,
             namestyle: { fill: "#87CEEB", font: "16px 'Lucida Sans Unicode', sans-serif" },
@@ -85,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
     
-    // (其餘所有程式碼與上一版完全相同)
+    // All other code below this point is exactly the same and correct.
     
     const constellationArt = {
       images: true,
@@ -205,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     function toggleSkyView() {
-        isArtActive = !isArtActive;
+        isSkyviewActive = !isSkyviewActive;
         skyviewToggleButton.textContent = isSkyviewActive ? '🛑 關閉陀螺儀' : '🔭 開啟陀螺儀';
         skyviewToggleButton.classList.toggle('active', isSkyviewActive);
 
