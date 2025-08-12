@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let isArtActive = false;
     let celestialData = [];
 
-    // --- 星圖設定 (關鍵修正) ---
+    // --- 星圖設定 (最終修正) ---
     const celestialConfig = {
         width: 0, 
         projection: "stereographic",
@@ -43,12 +43,13 @@ document.addEventListener("DOMContentLoaded", function() {
             namestyle: { fill: "#ddddff", font: "14px 'Helvetica', Arial, sans-serif" }
         },
         // ===================================
-        // =========== 修正部分 START ===========
+        // =========== 最終修正部分 START ==========
         // ===================================
         planets: {
             show: true, 
+            // **新增：告訴函式庫要顯示哪些行星**
+            which: ["sol", "mer", "ven", "ter", "lun", "mar", "jup", "sat", "ura", "nep"],
             symbolType: "disk",
-            // 之前遺漏了這個 symbols 物件，現在將它加回來
             symbols: {
               "sol": {symbol: "☉", fill: "#ffcc00"},
               "lun": {symbol: "☽", fill: "#f0f0f0"},
@@ -58,12 +59,13 @@ document.addEventListener("DOMContentLoaded", function() {
               "jup": {symbol: "♃", fill: "#c2b280"},
               "sat": {symbol: "♄", fill: "#f5deb3"},
               "ura": {symbol: "♅", fill: "#afeeee"},
-              "nep": {symbol: "♆", fill: "#4169e1"}
+              "nep": {symbol: "♆", fill: "#4169e1"},
+              "ter": {symbol: "♁", fill: "#0077be"} // 地球
             },
             style: { width: 2 }
         },
         // ===================================
-        // ============ 修正部分 END ============
+        // ============ 最終修正部分 END ============
         // ===================================
         constellations: {
             show: true, names: true,
@@ -83,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
     
-    // (其餘所有程式碼與上一版完全相同，此處為求完整性一併提供)
+    // (其餘所有程式碼與上一版完全相同)
     
     const constellationArt = {
       images: true,
@@ -203,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     function toggleSkyView() {
-        isSkyviewActive = !isSkyviewActive;
+        isArtActive = !isArtActive;
         skyviewToggleButton.textContent = isSkyviewActive ? '🛑 關閉陀螺儀' : '🔭 開啟陀螺儀';
         skyviewToggleButton.classList.toggle('active', isSkyviewActive);
 
