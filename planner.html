@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>目標規劃 - Kidrise 天文助手</title>
+    <link rel="stylesheet" href="/kidrise-starmap/style.css">
+</head>
+<body>
+
+    <nav class="main-nav">
+        <a href="/kidrise-starmap/index.html" class="nav-link">星空圖</a>
+        <a href="/kidrise-starmap/planner.html" class="nav-link active">目標規劃</a>
+        <a href="/kidrise-starmap/knowledge.html" class="nav-link">天文知識</a>
+    </nav>
+
+    <div class="content-container">
+        <div id="planner" class="tab-content active">
+            <div class="section">
+                <h2>觀測地點管理</h2>
+                <p class="intro-text">選擇一個遠端天文台後，將自動跳轉回星空圖頁面顯示該地點的星空。</p>
+                
+                <div class="form-group">
+                    <label for="observatory-select">iTelescope 遠端天文台:</label>
+                    <select id="observatory-select">
+                        <option value="">-- 請選擇一個天文台 --</option>
+                        <option value="T11,US">美國新墨西哥州 (T11)</option>
+                        <option value="T32,AU">澳洲 (T32)</option>
+                        <option value="T7,ES">西班牙 (T7)</option>
+                    </select>
+                </div>
+                </div>
+        </div>
+    </div>
+
+    <script src="/kidrise-starmap/planner.js"></script> </body>
+</html>
