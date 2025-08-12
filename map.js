@@ -42,17 +42,18 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     // --- 初始化 ---
-    Celestial.display({
-  projection: "stereographic",
-  transform: "equatorial",
-  datapath: "data/", // 或其他正確路徑
-  stars: { show: true },
-  constellations: { show: true },
-  planets: { show: true },
-  mw: { show: true },
-  background: { fill: "#000", stroke: "#000" }
-  // 其他你想要的設定
-});
+  Celestial.display({
+    container: container,           // or "starmap-container"
+    projection: "stereographic",
+    transform: "equatorial",
+    datapath: "data/",              // e.g., data/stars.json, data/constellations.json...
+    controls: false,                // we provide our own buttons
+    stars: { show: true },
+    constellations: { show: true },
+    planets: { show: true },
+    mw: { show: true },
+    background: { fill: "#000", stroke: "#000" }
+  });
 
 
     // --- 事件監聽 (已簡化) ---
