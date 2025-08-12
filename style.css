@@ -104,12 +104,6 @@ h2 {
     flex-direction: column; 
     gap: 10px; 
 }
-.corner-controls {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 20;
-}
 #message { 
     width: auto;
     max-width: 90%;
@@ -191,21 +185,8 @@ h2 {
 .zoom-button:active { 
     transform: scale(0.95); 
 }
-.corner-controls .control-button {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    padding: 0;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 #locationButton { background-color: #ffcc00; color: #000; }
-#skyview-toggle { background-color: #3498db; color: white; }
-#skyview-toggle.active { background-color: #e74c3c; }
-#toggle-art-button { background-color: #9b59b6; color: white; }
-#toggle-art-button.active { background-color: #e91e63; }
+
 
 
 /* ======================================= */
