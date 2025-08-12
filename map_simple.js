@@ -1,6 +1,5 @@
-// map_simple.js - 一個只求成功顯示星圖的極簡腳本
+// map_simple.js (最終修正版 - 解決 getBoundingClientRect 錯誤)
 
-// 等待網頁結構載入完成
 document.addEventListener("DOMContentLoaded", function() {
 
     // 守衛 Celestial 是否存在
@@ -10,16 +9,30 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
+    // =======================================================
+    // ============== 關鍵修正 START ===============
+    // =======================================================
+    // 手動獲取星圖容器元素及其尺寸
+    const starmapContainer = document.getElementById("starmap");
+    if (!starmapContainer) {
+        console.error("找不到 ID 為 'starmap' 的容器元素。");
+        return;
+    }
+    const width = starmapContainer.getBoundingClientRect().width;
+    // =======================================================
+    // =============== 關鍵修正 END ================
+    // =======================================================
+
     // 一個最基本、最不容易出錯的星圖設定
     const celestialConfig = {
-        width: 0, 
+        // 修正：不再使用 width: 0，而是傳入我們手動測量的確切寬度
+        width: width, 
         projection: "stereographic",
-        datapath: "/kidrise-starmap/data/", // 使用正確的絕對路徑
+        datapath: "/kidrise-starmap/data/",
         stars: {
             show: true,
-            limit: 5 // 只顯示到 5 等星，減輕負擔
+            limit: 5
         },
-        // 使用我們已知最完整的行星設定，避免出錯
         planets: {
             show: true, 
             which: ["sol", "mer", "ven", "ter", "lun", "mar", "jup", "sat", "ura", "nep"],
