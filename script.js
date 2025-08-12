@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    // --- All element definitions and state variables remain the same ---
+    // --- 元素定義 ---
     const tabLinks = document.querySelectorAll('.tab-link');
     const tabContents = document.querySelectorAll('.tab-content');
     const observatorySelect = document.getElementById('observatory-select');
@@ -15,11 +15,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const clearButton = document.getElementById('clear-button');
     const datalist = document.getElementById('celestial-objects');
     const storyModal = document.getElementById('storyModal');
+    
+    // --- 狀態變數 ---
     let isSkyviewActive = false;
     let isArtActive = false;
     let celestialData = [];
 
-    // --- 星圖設定 (最終修正) ---
+    // --- 星圖設定 ---
     const celestialConfig = {
         width: 0, 
         projection: "stereographic",
@@ -52,10 +54,8 @@ document.addEventListener("DOMContentLoaded", function() {
               "nep": {symbol: "♆", fill: "#4169e1"}, "ter": {symbol: "♁", fill: "#0077be"}
             },
             style: { width: 2 },
-            // =======================================================
-            // =========== THE FINAL, DEFINITIVE FIX IS HERE ===========
+            // 關鍵修正：補上這個 namestyle 物件，即使是空的也需要存在
             namestyle: { fill: "#f0f0f0", font: "14px 'Helvetica', Arial, sans-serif", align: "center", baseline: "middle" }
-            // =======================================================
         },
         constellations: {
             show: true, names: true,
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
     
-    // All other code below this point is exactly the same and correct.
+    // (其餘所有程式碼保持不變)
     
     const constellationArt = {
       images: true,
